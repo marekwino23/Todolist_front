@@ -34,11 +34,12 @@ export default {
     return {
       email:'',
       password:'',
+      data:'',
     }
   },
   methods:{
     onLogin: function(){
-    fetch('http://localhost:8000/login', {
+    this.data = fetch('http://localhost:8000/login', {
     method:'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,6 +49,22 @@ export default {
         "password": this.password,
       }),
     })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data)
+          if(data.message === "fatal error"){
+            alert("email is not exist in database")
+          }
+          else if(data.message === "wrong data"){
+            alert("wrong password")
+          }
+          else if(data.message === "success"){
+            sessionStorage.setItem('email', this.email)
+            sessionStorage.setItem('password', this.password)
+            alert("logged successful")
+            this.$router.push('home')
+          }
+        })
     },
   },
 }
