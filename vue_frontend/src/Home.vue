@@ -1,8 +1,9 @@
 <template>
   <div class="home">
     <div class="login">
-      <p>Hello {{ email }} </p>
-      <button @click="Logout">Logout</button>
+      <h2 style="color:white">Hello {{ email }} </h2>
+      <img width="5%" style="margin-left: 77px" src='./assets/vector1.png'>
+      <input type="button" value="Logout" style="margin-top:158px" @click="Logout">
     </div>
     <div class="container">
       <div class="col-75">
@@ -16,7 +17,7 @@
         <br>
         <div v-for="(list, index) in lists" :key="list.task">
           {{ index }} - {{ list.date }} - {{ list.task }} - {{list.status}}
-          <input type="checkbox"  @change="updateStatus(list)" v-model="done">
+          <input type="checkbox"  @Change="updateStatus(list)" v-model="done">
           <input type="button" value="update" @click="updateTask(list,list.id)">
           <input type="button" style="margin-right: 5px" value="delete" @click="deleteTask(list,list.id)">
         </div>
@@ -74,8 +75,6 @@ export default {
       window.location.href='/update/' + list.id + '/' + list.task
     },
     updateStatus:function(list){
-      console.log(list.id)
-      console.log(this.done)
       if(!this.done){
         console.log(this.done)
         fetch('http://localhost:8000/updateStatus', {
@@ -154,7 +153,7 @@ export default {
       })
           .then(response => response.json())
           .then(data => {
-            if (data.info === "success") {
+            if (data.message === "success") {
               alert("Task added")
               window.location.href = "/home"
             } else {

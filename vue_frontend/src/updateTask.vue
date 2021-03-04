@@ -9,7 +9,7 @@
         <p class="todo">TODOLIST </p>
         <input class="password" v-model="task" :placeholder=tasks.task>
         <input class="password" style="margin-bottom:21px; margin-top:61px " readonly :placeholder=tasks.status >
-        <input type="button" style="margin-bottom:21px; margin-top:0px " @click="updateStatus()" value="Change status">
+        <input type="button" style="margin-bottom:21px; margin-top:0px " onClick="updateStatus()" value="Change status">
        <input class="password" v-model="date" :placeholder=tasks.date>
         <br>
         <br>

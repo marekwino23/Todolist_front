@@ -2,9 +2,9 @@
   <div id="app">
     <header>
       <div class="nav">
-        <div v-show="status === 'true' && status !== ''">
-          <button v-show="status !== 'true'" class="button"><router-link class="nav_reg" to="/register">Register</router-link></button>
-          <button v-show="status !== 'true'" class="button"> <router-link class="nav_log"  to="/login">Login</router-link></button>
+        <div :v-show="!status">
+          <button class="button"><router-link class="nav_reg" to="/register">Register</router-link></button>
+          <button  class="button"> <router-link class="nav_log"  to="/login">Login</router-link></button>
         </div>
       </div>
     </header>
@@ -23,7 +23,7 @@ export default {
   name: 'App',
   data: function () {
     return {
-     status:'',
+     status:false,
     }
   },
   mounted() {

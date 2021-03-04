@@ -61,7 +61,7 @@ export default {
           else if(data.message === "success"){
             sessionStorage.setItem('email', this.email)
             sessionStorage.setItem('password', this.password)
-            sessionStorage.setItem('logged in', "true")
+            sessionStorage.setItem('logged in', true)
             sessionStorage.setItem('id', data.id )
             alert("logged successful")
             this.$router.push('home')
