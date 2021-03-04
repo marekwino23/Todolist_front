@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <div class="container">
-      <form @submit="onRegister">
+      <form>
         <div class="row">
           <div class="col-25">
             <label>Name</label>
@@ -36,7 +36,7 @@
         </div>
         <br>
         <div class="row">
-          <input type="submit" value="Submit">
+          <input type="button" @click="onRegister" value="Submit">
         </div>
       </form>
     </div>
@@ -77,6 +77,7 @@ export default {
             console.log('Success:', data.message)
             if(data.message === "success"){
               sessionStorage.setItem("email", this.email)
+              alert("User created successful")
               this.$router.push('login')
             }
             else{
@@ -123,7 +124,7 @@ label {
   display: inline-block;
 }
 
-input[type=submit] {
+input[type=submit],[type=button] {
   background-color: #37cec0;
   color: white;
   padding: 12px 20px;

@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="container">
-    <form @submit="onLogin">
+    <form>
       <div class="row">
         <div class="col-25">
           <label>Email</label>
@@ -20,7 +20,7 @@
       </div>
       <br>
       <div class="row">
-        <input type="submit" value="Submit">
+        <input type="button" @click="onLogin" value="Submit">
       </div>
     </form>
   </div>
@@ -52,15 +52,17 @@ export default {
         .then(response => response.json())
         .then(data => {
           console.log('Success:', data)
-          if(data.message === "fatal error"){
+          if(data.error === "fatal error"){
             alert("email is not exist in database")
           }
-          else if(data.message === "wrong data"){
+          else if(data.message === "wrong password"){
             alert("wrong password")
           }
           else if(data.message === "success"){
             sessionStorage.setItem('email', this.email)
             sessionStorage.setItem('password', this.password)
+            sessionStorage.setItem('logged in', "true")
+            sessionStorage.setItem('id', data.id )
             alert("logged successful")
             this.$router.push('home')
           }
@@ -101,7 +103,7 @@ label {
   display: inline-block;
 }
 
-input[type=submit] {
+input[type=submit], [type=button] {
   background-color: #37cec0;
   color: white;
   padding: 12px 20px;

@@ -1,25 +1,21 @@
 <template>
   <div class="home">
     <div class="login">
-      <p>Hello {{ email }} </p>
-      <button @click="Logout">Logout</button>
+      <p>Update Task</p>
     </div>
     <div class="container">
       <div class="col-75">
         <br>
         <p class="todo">TODOLIST </p>
-        <input class="password" v-model="task" placeholder="Write new task">
-        <input type="button" @click="addTask" value="Add">
+        <input class="password" v-model="task" :placeholder=tasks.task>
+        <input class="password" style="margin-bottom:21px; margin-top:61px " readonly :placeholder=tasks.status >
+        <input type="button" style="margin-bottom:21px; margin-top:0px " @click="updateStatus()" value="Change status">
+       <input class="password" v-model="date" :placeholder=tasks.date>
         <br>
         <br>
+        <input type="button" @click="updateTask()" value="Update">
+        <input type="button" @click="onBack()" style="margin-right:18px" value="Back">
         <br>
-        <br>
-        <div v-for="(list, index) in lists" :key="list.task">
-          {{ index }} - {{ list.date }} - {{ list.task }} - {{list.status}}
-          <input type="checkbox"  @change="updateStatus(list)" v-model="done">
-          <input type="button" value="update" @click="updateTask(list,list.id)">
-          <input type="button" style="margin-right: 5px" value="delete" @click="deleteTask(list,list.id)">
-        </div>
       </div>
     </div>
   </div>
@@ -31,96 +27,86 @@ export default {
   name: 'home',
   data: function () {
     return {
-      email: '',
       task: '',
       data: '',
-      lists: [],
+      task_id:'',
       id: '',
+      status:'',
       tasks: '',
       date: '',
-      done:false,
       formatDate: '',
     }
   },
   mounted() {
-    console.log(this.done)
-    this.email = sessionStorage.getItem('email')
+    this.task_id = this.$route.params.id
     this.id = sessionStorage.getItem("id")
-    this.tasks = fetch('http://localhost:8000/getTasks/' + this.id, {
+     fetch('http://localhost:8000/getownTask/' + this.id + '/' + this.task_id, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     })
         .then(response => response.json())
-        .then(tasks => {
-          console.log(tasks)
-          let i
-          for (i = 0; i < tasks.items.length; i++) {
-            console.log(tasks.items[i])
-            this.lists.push(tasks.items[i])
+        .then(data => {
+          console.log(data)
+          let i;
+          for (i = 0; i < data.items.length; i++) {
+            console.log(data.items[i])
+            this.tasks = data.items[i]
+            console.log(this.tasks)
           }
         })
   },
 
   methods: {
-    Logout: function () {
-      sessionStorage.clear()
-      alert("Logout successful")
-      this.$router.push('login')
+    // updateStatus:function() {
+    //   fetch('http://localhost:8000/updateStatus', {
+    //     method: 'PATCH',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       "task_id": this.task_id,
+    //       "id": this.id,
+    //       "status": this.status,
+    //     }),
+    //   })
+    //       .then(response => response.json())
+    //       .then(data => {
+    //         console.log(data)
+    //         if (data.message === "status success") {
+    //           this.done = true
+    //           window.location.href = '/home'
+    //         }
+    //       })
+    // },
+    onBack: function (){
+      this.$router.push('/home')
     },
-    updateTask: function(list){
-      console.log(list.id)
-      window.location.href='/update/' + list.id + '/' + list.task
+    updateTask:function() {
+      console.log(this.task)
+      fetch('http://localhost:8000/updateTask', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "task_id": this.task_id,
+          "id": this.id,
+          "status": this.status,
+          "task": this.task,
+          "date": this.date,
+        }),
+      })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data)
+            if (data.info === "update success") {
+              window.location.href = '/home'
+            }
+          })
     },
-    updateStatus:function(list){
-      console.log(list.id)
-      console.log(this.done)
-      if(!this.done){
-        console.log(this.done)
-        fetch('http://localhost:8000/updateStatus', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            "task_id": list.id,
-            "id": this.id,
-            "done": this.done,
-          }),
-        })
-            .then(response => response.json())
-            .then(data => {
-              console.log(data)
-              if(data.message === "status success"){
-                this.done = true
-                window.location.href = '/home'
-              }
-            })
-      }
-      else{
-        fetch('http://localhost:8000/updateStatus', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            "task_id": list.id,
-            "id": this.id,
-            "done": this.done,
-          }),
-        })
-            .then(response => response.json())
-            .then(data => {
-              console.log(data)
-              if(data.info === "success"){
-                this.done = false
-                window.location.href = '/home'
-              }
-            })
-      }
 
-    },
 
     deleteTask: function (list) {
       console.log(list.id)

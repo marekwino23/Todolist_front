@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Register from "@/Register";
 import Login from "@/Login";
 import Home from "@/Home";
+import updateTask from "@/./updateTask";
 Vue.use(VueRouter);
 
 
@@ -24,6 +25,11 @@ const router =  new VueRouter({
             path: '/home',
             name: 'home',
             component: Home,
+        },
+        {
+            path: '/update/:id/:task',
+            name: 'update',
+            component: updateTask,
         },
 
     ]
