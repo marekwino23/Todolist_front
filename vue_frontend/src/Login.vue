@@ -53,18 +53,18 @@ export default {
         .then(data => {
           console.log('Success:', data)
           if(data.error === "fatal error"){
-            alert("email is not exist in database")
+            this.$swal("email is not exist in database")
           }
           else if(data.message === "wrong password"){
-            alert("wrong password")
+            this.$swal("wrong password")
           }
           else if(data.message === "success"){
             sessionStorage.setItem('email', this.email)
             sessionStorage.setItem('password', this.password)
             sessionStorage.setItem('logged in', true)
             sessionStorage.setItem('id', data.id )
-            alert("logged successful")
-            this.$router.push('home')
+            this.$swal("logged successful")
+            window.location.href = '/home'
           }
         })
     },

@@ -2,8 +2,8 @@
   <div class="home">
     <div class="login">
       <h2 style="color:white">Hello {{ email }} </h2>
-      <img width="5%" style="margin-left: 77px" src='./assets/vector1.png'>
-      <input type="button" value="Logout" style="margin-top:158px" @click="Logout">
+      <img width="10%" style="margin-left: 77px" src='./assets/vector1.png'>
+      <input type="button" value="Logout" style="margin-top:228px" @click="Logout">
     </div>
     <div class="container">
       <div class="col-75">
@@ -15,11 +15,11 @@
         <br>
         <br>
         <br>
-        <div v-for="(list, index) in lists" :key="list.task">
+        <div style="display: flow-root" v-for="(list, index) in lists" :key="list.task">
           {{ index }} - {{ list.date }} - {{ list.task }} - {{list.status}}
-          <input type="checkbox"  @Change="updateStatus(list)" v-model="done">
+          <input type="checkbox"  @change="updateStatus(list, list.id)" v-model="done">
           <input type="button" value="update" @click="updateTask(list,list.id)">
-          <input type="button" style="margin-right: 5px" value="delete" @click="deleteTask(list,list.id)">
+          <input type="button" style="margin-right: 5px;margin-bottom:5px " value="delete" @click="deleteTask(list,list.id)">
         </div>
       </div>
     </div>
@@ -67,16 +67,16 @@ export default {
   methods: {
     Logout: function () {
       sessionStorage.clear()
-      alert("Logout successful")
-      this.$router.push('login')
+      this.$swal("Logout successful")
+      window.location.href = '/login'
     },
     updateTask: function(list){
       console.log(list.id)
       window.location.href='/update/' + list.id + '/' + list.task
     },
     updateStatus:function(list){
+      console.log(list.id)
       if(!this.done){
-        console.log(this.done)
         fetch('http://localhost:8000/updateStatus', {
           method: 'PATCH',
           headers: {
@@ -91,9 +91,10 @@ export default {
             .then(response => response.json())
             .then(data => {
               console.log(data)
-              if(data.message === "status success"){
-                this.done = true
+              if(data.message === "done"){
+                this.$swal("status changes: done")
                 window.location.href = '/home'
+                this.done = true
               }
             })
       }
@@ -112,9 +113,11 @@ export default {
             .then(response => response.json())
             .then(data => {
               console.log(data)
-              if(data.info === "success"){
-                this.done = false
+              if(data.info === "inprogress"){
+                console.log("bang")
+                this.$swal("status changes: inprogress")
                 window.location.href = '/home'
+                this.done = false
               }
             })
       }
@@ -154,7 +157,7 @@ export default {
           .then(response => response.json())
           .then(data => {
             if (data.message === "success") {
-              alert("Task added")
+              this.$swal("Task added")
               window.location.href = "/home"
             } else {
               console.log("failed")
@@ -206,6 +209,7 @@ input[type=submit], [type=button] {
   color: white;
   padding: 12px 20px;
   border: none;
+  display: flex;
   border-radius: 4px;
   cursor: pointer;
   float: right;

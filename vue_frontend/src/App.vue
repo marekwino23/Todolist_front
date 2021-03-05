@@ -1,11 +1,9 @@
 <template>
   <div id="app">
     <header>
-      <div class="nav">
-        <div :v-show="!status">
+      <div v-if='status == false' class="nav">
           <button class="button"><router-link class="nav_reg" to="/register">Register</router-link></button>
           <button  class="button"> <router-link class="nav_log"  to="/login">Login</router-link></button>
-        </div>
       </div>
     </header>
       <br>
@@ -23,12 +21,16 @@ export default {
   name: 'App',
   data: function () {
     return {
-     status:false,
+     status: false,
     }
   },
   mounted() {
-    this.status = sessionStorage.getItem("logged in")
-  }
+    console.log(this.status)
+    if(sessionStorage.length) {
+      this.status = sessionStorage.getItem("logged in")
+      console.log(this.status)
+    }
+  },
 }
 
 </script>

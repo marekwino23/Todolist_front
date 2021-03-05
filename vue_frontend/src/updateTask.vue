@@ -8,9 +8,11 @@
         <br>
         <p class="todo">TODOLIST </p>
         <input class="password" v-model="task" :placeholder=tasks.task>
-        <input class="password" style="margin-bottom:21px; margin-top:61px " readonly :placeholder=tasks.status >
-        <input type="button" style="margin-bottom:21px; margin-top:0px " onClick="updateStatus()" value="Change status">
-       <input class="password" v-model="date" :placeholder=tasks.date>
+        <select v-model="status" name="status" id="status">
+          <option >inprogress</option>
+          <option >done</option>
+        </select>
+        <date-picker style="margin-top: 15px" v-model="date" valueType="format"></date-picker>
         <br>
         <br>
         <input type="button" @click="updateTask()" value="Update">
@@ -23,8 +25,12 @@
 
 <script>
 
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+
 export default {
   name: 'home',
+  components: {DatePicker},
   data: function () {
     return {
       task: '',
@@ -59,32 +65,11 @@ export default {
   },
 
   methods: {
-    // updateStatus:function() {
-    //   fetch('http://localhost:8000/updateStatus', {
-    //     method: 'PATCH',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       "task_id": this.task_id,
-    //       "id": this.id,
-    //       "status": this.status,
-    //     }),
-    //   })
-    //       .then(response => response.json())
-    //       .then(data => {
-    //         console.log(data)
-    //         if (data.message === "status success") {
-    //           this.done = true
-    //           window.location.href = '/home'
-    //         }
-    //       })
-    // },
     onBack: function (){
       this.$router.push('/home')
     },
     updateTask:function() {
-      console.log(this.task)
+      console.log(this.status)
       fetch('http://localhost:8000/updateTask', {
         method: 'PATCH',
         headers: {
@@ -141,7 +126,7 @@ export default {
           .then(response => response.json())
           .then(data => {
             if (data.info === "success") {
-              alert("Task added")
+              this.$swal("Task updated")
               window.location.href = "/home"
             } else {
               console.log("failed")
@@ -173,6 +158,7 @@ p {
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
+  margin-top: 19px;
 }
 
 input[type=text], select, textarea {
@@ -181,6 +167,7 @@ input[type=text], select, textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
+  margin-top: 18px;
 }
 
 label {

@@ -52,7 +52,6 @@ export default {
   data: function(){
     return {
       name: '',
-      data:'',
       surname:'',
       email:'',
       password:'',
@@ -60,7 +59,7 @@ export default {
   },
   methods:{
     onRegister: function(event){
-      this.data = fetch('http://localhost:8000/register', {
+       fetch('http://localhost:8000/register', {
         method:'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,8 +75,7 @@ export default {
           .then(data => {
             console.log('Success:', data.message)
             if(data.message === "success"){
-              sessionStorage.setItem("email", this.email)
-              alert("User created successful")
+              this.$swal("User created successful")
               this.$router.push('login')
             }
             else{
@@ -87,7 +85,7 @@ export default {
           .catch((error) => {
             console.error('Error:', error);
           });
-      event.preventDefault()
+       event.preventDefault()
     },
   },
 }
