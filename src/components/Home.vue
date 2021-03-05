@@ -16,8 +16,12 @@
         <br>
         <br>
         <div style="display: flow-root" v-for="(list, index) in lists" :key="list.task">
-          {{ index }} - {{ list.date }} - {{ list.task }} - {{list.status}}
-          <input type="checkbox"  @change="updateStatus(list, list.id)" v-model="done">
+          {{ index }} - {{ list.date }} - {{ list.task }} - status:{{list.status}}
+          <select @click="updateStatus(list,list.id)" style="width: 15%" v-model="done" name="status" id="status">
+            <option >inprogress</option>
+            <option >done</option>
+            <option >new</option>
+          </select>
           <input type="button" value="update" @click="updateTask(list,list.id)">
           <input type="button" style="margin-right: 5px;margin-bottom:5px " value="delete" @click="deleteTask(list,list.id)">
         </div>
@@ -39,7 +43,7 @@ export default {
       id: '',
       tasks: '',
       date: '',
-      done:false,
+      done:'',
       formatDate: '',
     }
   },
@@ -76,8 +80,7 @@ export default {
     },
     updateStatus:function(list){
       console.log(list.id)
-      if(!this.done){
-        fetch('http://localhost:8000/updateStatus', {
+         fetch('http://localhost:8000/updateStatus', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -94,35 +97,10 @@ export default {
               if(data.message === "done"){
                 this.$swal("status changes: done")
                 window.location.href = '/home'
-                this.done = true
-              }
-            })
-      }
-      else{
-        fetch('http://localhost:8000/updateStatus', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            "task_id": list.id,
-            "id": this.id,
-            "done": this.done,
-          }),
-        })
-            .then(response => response.json())
-            .then(data => {
-              console.log(data)
-              if(data.info === "inprogress"){
-                console.log("bang")
-                this.$swal("status changes: inprogress")
-                window.location.href = '/home'
-                this.done = false
-              }
-            })
-      }
+                }
 
-    },
+              })
+      },
 
     deleteTask: function (list) {
       console.log(list.id)

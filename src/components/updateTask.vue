@@ -7,12 +7,12 @@
       <div class="col-75">
         <br>
         <p class="todo">TODOLIST </p>
-        <input class="password" v-model="task" :placeholder=tasks.task>
+        <input class="password" v-model="task" required >
         <select v-model="status" name="status" id="status">
           <option >inprogress</option>
           <option >done</option>
         </select>
-        <date-picker style="margin-top: 15px" v-model="date" valueType="format"></date-picker>
+        <date-picker required style="margin-top: 15px" v-model="date" valueType="format"></date-picker>
         <br>
         <br>
         <input type="button" @click="updateTask()" value="Update">
@@ -59,7 +59,10 @@ export default {
           for (i = 0; i < data.items.length; i++) {
             console.log(data.items[i])
             this.tasks = data.items[i]
-            console.log(this.tasks)
+            console.log(this.tasks.task)
+            this.task = this.tasks.task
+            this.date = this.tasks.date
+            this.status = this.tasks.status
           }
         })
   },
@@ -69,7 +72,7 @@ export default {
       this.$router.push('/home')
     },
     updateTask:function() {
-      console.log(this.status)
+      if(this.date.length)
       fetch('http://localhost:8000/updateTask', {
         method: 'PATCH',
         headers: {
