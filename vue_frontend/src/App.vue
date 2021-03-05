@@ -28,7 +28,6 @@ export default {
     console.log(this.status)
     if(sessionStorage.length) {
       this.status = sessionStorage.getItem("logged in")
-      console.log(this.status)
     }
   },
 }

@@ -2,7 +2,7 @@
   <div class="home">
     <div class="login">
       <h2 style="color:white">Hello {{ email }} </h2>
-      <img width="10%" style="margin-left: 77px" src='./assets/vector1.png'>
+      <img width="10%" style="margin-left: 77px" src='../assets/vector1.png'>
       <input type="button" value="Logout" style="margin-top:228px" @click="Logout">
     </div>
     <div class="container">

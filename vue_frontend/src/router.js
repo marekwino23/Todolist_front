@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Register from "@/Register";
-import Login from "@/Login";
-import Home from "@/Home";
-import updateTask from "@/./updateTask";
+import Register from "@/components/Register";
+import Login from "@/components/Login";
+import Home from "@/components/Home";
+import updateTask from "./components/updateTask";
 Vue.use(VueRouter);
 
 
