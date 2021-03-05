@@ -20,7 +20,7 @@
       </div>
       <br>
       <div class="row">
-        <input type="button" @click="onLogin" value="Submit">
+        <input type="button" @click="onLogin" value="Login">
       </div>
     </form>
   </div>

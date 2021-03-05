@@ -36,7 +36,7 @@
         </div>
         <br>
         <div class="row">
-          <input type="button" @click="onRegister" value="Submit">
+          <input type="button" @click="onRegister" value="Register">
         </div>
       </form>
     </div>
