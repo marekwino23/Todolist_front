@@ -28,6 +28,14 @@
         </div>
         <div class="row">
           <div class="col-25">
+            <label>Check email</label>
+          </div>
+          <div class="col-75">
+             <input type="button" class="button" :disabled="email === ''" @click="onCheck" v-model="check">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
             <label>Password</label>
           </div>
           <div class="col-75">
@@ -36,7 +44,7 @@
         </div>
         <br>
         <div class="row">
-          <input type="button" @click="onRegister" value="Register">
+          <input type="button" @click="onRegister" :disabled="check === 'busy' || check === 'check' || this.name === '' || this.surname === '' || this.password === ''" value="Register">
         </div>
       </form>
     </div>
@@ -54,10 +62,38 @@ export default {
       name: '',
       surname:'',
       email:'',
+      check:'check',
       password:'',
+      data:'',
     }
   },
   methods:{
+
+ onCheck: function () {
+   console.log(this.email)
+     this.data = fetch('http://localhost:8000/checkemail', {
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "email": this.email,
+        }),
+      })
+       .then(response => response.json())
+          .then(data => {
+            if (data.status === "success") {
+              this.check = "free"
+              this.$swal.fire("email is free")
+              console.log(this.check)
+      }    else {
+           this.$swal.fire("email is busy")
+      }
+
+
+          })
+          },
+
     onRegister: function(event){
        fetch('http://localhost:8000/register', {
         method:'POST',
