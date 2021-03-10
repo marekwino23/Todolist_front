@@ -11,12 +11,18 @@
         <p class="todo">TODOLIST </p>
         <input class="password" v-model="task" placeholder="Write new task">
         <input type="button" @click="addTask" value="Add">
+        <input class="password" v-model="search" placeholder="Search task">
+        <select v-model="options">
+          <option >date</option>
+          <option >task</option>
+          <option >status</option>
+        </select>
         <br>
         <br>
         <br>
         <br>
-        <div style="display: flow-root" v-for="(list, index) in lists" :key="list.task">
-          {{ index }} - {{ list.date }} - {{ list.task }} - status:{{list.status}}
+        <div style="display: flow-root" v-for="list in filteredList" :key="list.task">
+          {{ list.date }} - {{ list.task }} - status:{{list.status}}
           <select @click="updateStatus(list,list.id)" style="width: 15%" v-model="done" name="status" id="status">
             <option >inprogress</option>
             <option >done</option>
@@ -38,6 +44,8 @@ export default {
     return {
       email: '',
       task: '',
+      search:'',
+      options:'',
       data: '',
       lists: [],
       id: '',
@@ -68,6 +76,26 @@ export default {
         })
   },
 
+  computed:{
+    filteredList: function(){
+      console.log(this.options)
+      return this.lists.filter(list => {
+    if(this.options === "task"){
+      return list.task.toLowerCase().includes(this.search.toLowerCase())
+    }
+    else if(this.options === "status"){
+      return list.status.toLowerCase().includes(this.search.toLowerCase())
+    }
+    else if(this.options === "date"){
+      return list.date.toLowerCase().includes(this.search.toLowerCase())
+    }
+    else{
+      return list.task.toLowerCase().includes(this.search.toLowerCase())
+    }
+      })
+    }
+  },
+
   methods: {
     Logout: function () {
       sessionStorage.clear()
@@ -95,7 +123,6 @@ export default {
             .then(data => {
               console.log(data)
               if(data.message === "done"){
-                this.$swal("status changes: done")
                 window.location.href = '/home'
                 }
 
