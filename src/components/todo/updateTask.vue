@@ -46,7 +46,7 @@ export default {
   mounted() {
     this.task_id = this.$route.params.id
     this.id = sessionStorage.getItem("id")
-     fetch('http://localhost:8000/getownTask/' + this.id + '/' + this.task_id, {
+     fetch('http://localhost:8000/todo/getownTasks/' + this.id + '/' + this.task_id, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ export default {
     },
     updateTask:function() {
       if(this.date.length)
-      fetch('http://localhost:8000/updateTask', {
+      fetch('http://localhost:8000/todo/updateTask', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -91,48 +91,6 @@ export default {
             console.log(data)
             if (data.info === "update success") {
               window.location.href = '/home'
-            }
-          })
-    },
-
-
-    deleteTask: function (list) {
-      console.log(list.id)
-      this.data = fetch('http://localhost:8000/deleteTask', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "task_id": list.id,
-          "id": this.id
-        }),
-      })
-      window.location.href = '/home'
-    },
-
-
-    addTask: function () {
-      this.date = new Date()
-      this.formatDate = this.date.toJSON().slice(0, 10).replace(/-/g, '-')
-      this.data = fetch('http://localhost:8000/addTask', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "task": this.task,
-          "id": this.id,
-          "formatDate": this.formatDate,
-        }),
-      })
-          .then(response => response.json())
-          .then(data => {
-            if (data.info === "success") {
-              this.$swal("Task updated")
-              window.location.href = "/home"
-            } else {
-              console.log("failed")
             }
           })
     },

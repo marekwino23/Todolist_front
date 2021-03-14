@@ -2,14 +2,13 @@
   <div id="app">
     <header>
       <div v-if='status == false' class="nav">
-          <button class="button"><router-link class="nav_reg" to="/register">Register</router-link></button>
-          <button  class="button"> <router-link class="nav_log"  to="/login">Login</router-link></button>
+          <button id="register" class="button"><router-link class="nav_reg" to="/register">Register</router-link></button>
+          <button id="login" class="button"> <router-link class="nav_log"  to="/login">Login</router-link></button>
       </div>
     </header>
       <br>
       <br>
       <router-view></router-view>
-
     </div>
 </template>
 
